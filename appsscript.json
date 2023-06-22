@@ -1,0 +1,14 @@
+{
+  "timeZone": "Etc/GMT-9",
+  "dependencies": {
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "sheets": {
+    "macros": [{
+      "menuName": "setCurrentDate",
+      "functionName": "setCurrentDate",
+      "defaultShortcut": "Ctrl+Alt+Shift+0"
+    }]
+  }
+}
