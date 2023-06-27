@@ -157,6 +157,10 @@ function isEarlyRbgo(calendarPropeties, scheduleData) {
 }
 
 
+function isStudySchdule(calendarPropeties) {
+  return calendarPropeties.some(calp => calp.desc.includes(IS_STUDY));
+}
+
 //lastCarRideが３日以上離れているなら
 function isCarIdleFor3days(eventday) {
   const lastCarRide = myRecord.getValueFrom(LD, 'lastCar');
@@ -172,6 +176,9 @@ function isExerciseIdleFor3days(eventday) {
 //日付情報に関する問題をバリデーションする
 function showProgrem(scheduleData, calendarPropeties) {
   let msg = '';
+  if (isStudySchdule(calendarPropeties)) {
+    msg += '学習予定がありません';
+  }
   if (getSaunaAtWed(scheduleData.goSauna, scheduleData.eventday)) {
     msg += '目的地のSaunaが非営業日の可能性があります\n';
   }

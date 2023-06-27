@@ -237,7 +237,7 @@ class CalendarProperty {
     this.doneColor = CalendarApp.EventColor.BLUE;
     this.st = null;
     this.ed = null;
-    this.desc = null;
+    this.desc = '';
     this.visibility = CalendarApp.Visibility.PRIVATE;
     this.reminderTime = 0;
     this.calendar = CalendarApp.getDefaultCalendar();
@@ -283,7 +283,7 @@ class CalendarProperty {
     if (timing === 'before') {//イベントがまだなら
       this.event.setTime(this.st, this.ed);
     } else if (timing === 'onTime') { //イベントが進行中なら
-      this.event.setTime(thisEvent.getStartTime(), this.ed);
+      this.event.setTime(this.event.getStartTime(), this.ed);
     }
   }
 
@@ -626,5 +626,6 @@ function getDayStrFromDate(date) {
 
 
 function grobalTest() {
+  Logger.log(todayCondition);
   Logger.log('成功');
 }
