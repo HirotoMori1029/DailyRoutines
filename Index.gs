@@ -624,6 +624,11 @@ function getDayStrFromDate(date) {
   }
 }
 
+function activateSheet(sheet) {
+  const active = SpreadsheetApp.getActiveSheet();
+  active.setActiveSheet(sheet);
+}
+
 
 function grobalTest() {
   Logger.log(todayCondition);
