@@ -18,11 +18,10 @@ function onScheduleBtnClicked() {
   if (ask(msg + "\n以上の条件でスケジュールしますか？")) {
     schedule(calendarProterties);
     if (!isNightHour(cDate)) sendLineMessage(msg);
-    saveScheduleInfo(scheduleData);
     //外出中に明日のスケジュールを作成していたら
     if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOutside()) {
-      rad.check('makeTomorrowScheduel()');
-      activateSheet(rad.sheets.main)
+      rad.check('makeTomorrowSchedule()');
+      activateSheet(rad.sheets.main);
     }
     //MorningRoutine中にスケジュールを作成していたら
     if (isCreatingOnMr()) {
@@ -32,6 +31,7 @@ function onScheduleBtnClicked() {
       mr.check('checkOrReschedule()');
       activateSheet(mr.sheets.main);
     }
+    saveScheduleInfo(scheduleData);
   }
 }
 //ScheduleSheetから情報を取得する関数
@@ -178,7 +178,7 @@ function isExerciseIdleFor3days(eventday) {
 //日付情報に関する問題をバリデーションする
 function showProgrem(scheduleData, calendarPropeties) {
   let msg = '';
-  if (isStudySchdule(calendarPropeties)) {
+  if (!isStudySchdule(calendarPropeties)) {
     msg += '学習予定がありません';
   }
   if (getSaunaAtWed(scheduleData.goSauna, scheduleData.eventday)) {
