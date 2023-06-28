@@ -26,8 +26,6 @@ function onMrEndBtnClicked() {
   const mrCal = new CalendarProperty(mr.name, 60);
   mrCal.event = todayEvents[todayEventTitles.indexOf(mrCal.title)];
   nr.optimizeList = optimizeNrList;
-  //今日の条件を表示するカレンダーを元に、ルーティンリストを修正する
-  showDialog();
   //すでにイベントが存在するならばイベントを修正
   if (mrCal.event) {
     mrCal.setTimeEnd();
@@ -37,7 +35,7 @@ function onMrEndBtnClicked() {
   writeWhatToTakeWith(todayCondition);
   nr.check('mrDone()');
   mr.lockColumn(1);
-  Browser.msgBox("Have a good day, Enter (Ctrl + W)");
+  activateSheet(RBGO);
 }
 
 function onMrResetBtnClicked() {

@@ -624,13 +624,14 @@ function getDayStrFromDate(date) {
   }
 }
 
-function activateSheet(sheet) {
-  const active = SpreadsheetApp.getActiveSheet();
-  active.setActiveSheet(sheet);
+function activateSheet(sheetName) {
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  const to = active.getSheetByName(sheetName);
+  active.setActiveSheet(to);
 }
 
 
 function grobalTest() {
-  Logger.log(todayCondition);
+  activateSheet(RBGO);
   Logger.log('成功');
 }
