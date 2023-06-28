@@ -6,26 +6,24 @@ const RS = 'RuckSack';
 //リュックサックシートのリセットボタンが押されたとき
 function onRsEndBtnClicked() {
   const sbSheet = ss.getSheetByName(SB);
-  const aSheet = SpreadsheetApp.getActive();
   const rbgo = new RoutineSheet(RBGO);
   resetRsSheetCell();
   if (sbSheet.getRange(1, 1).getValue()) {   //saunaBagを使用するなら
-    SpreadsheetApp.setActiveSheet(aSheet.getSheetByName(SB));
+    activateSheet(SB)
   } else {
     rbgo.check(CHECK_BAG_STR);
+    activateSheet(RBGO);
   }
 }
 
 //サウナバッグシートのリセットボタンが押されたとき
 function onSbEndBtnClicked() {
   const sbSheet = ss.getSheetByName(SB);
-  const aSheet = SpreadsheetApp.getActive();
   const rbgo = new RoutineSheet(RBGO);
   //セルを終了状態にする処理
   sbSheet.getRange(1, 1).uncheck();
   sbSheet.getRange(1, 1, 1, 2).setBackground('gray');
-  rbgo.check(CHECK_BAG_STR);
-  SpreadsheetApp.setActiveSheet(aSheet.getSheetByName(RS));
+  activateSheet(RS);
 }
 
 function onRsOptimizeBtnClicked() {
