@@ -33,6 +33,7 @@ function onMrEndBtnClicked() {
   mr.saveLastDones();
   mr.clearCheckAndColor();
   writeWhatToTakeWith(todayCondition);
+  nr.optimize(todayCondition);
   nr.check('mrDone()');
   mr.lockColumn(1);
   activateSheet(RBGO);

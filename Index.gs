@@ -203,6 +203,14 @@ class RoutineSheet {
       calendarProperty.make().setColor(calendarProperty.doneColor);
     }
   }
+
+  setValueToRoutineList(key, routineName, value) {
+    const keyIndex = this.headers.indexOf(key) + 1;
+    const routineNames = this.rValues.map(routine => routine[this.headers.indexOf('name')]);
+    const routineIndex = routineNames.indexOf(routineName) + 1;
+    const editRange = this.sheets.routineList.getRange(routineIndex, keyIndex);
+    editRange.setValue(value);
+  }
 }
 
 
@@ -632,6 +640,7 @@ function activateSheet(sheetName) {
 
 
 function grobalTest() {
-  activateSheet(RBGO);
+  const tr = new RoutineSheet('TestRoutine');
+  tr.setValueToRoutineList('always', 'aaa', 'changed here');
   Logger.log('成功');
 }

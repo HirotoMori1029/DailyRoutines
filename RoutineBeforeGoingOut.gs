@@ -4,6 +4,7 @@ function onRbgoStartBtnClicked() {
   const rbgo = new RoutineSheet(RBGO);
   rbgo.optimizeList = optimizeRbgoList;
   const rbgoCal = new CalendarProperty(RBGO, 30)
+  setToothbrushInterval(rbgo);
   rbgo.onStart(rbgoCal);
 }
 
@@ -34,6 +35,7 @@ function onRbgoEndBtnClicked() {
   }
   nr.check("rbgoDone()")
   rbgo.lockColumn(1);
+  rbgo.saveLastDones();
   Browser.msgBox('Remember that you will lock your house!, Enter(Ctrl + W)');
 }
 
@@ -74,4 +76,16 @@ function optimizeRbgoList(conditions) {
     }
     return condition;
   })
+}
+
+function setToothbrushInterval(rbgo) {
+  const mrEvent = todayEvents[todayEventTitles.indexOf(MR)];
+  if (mrEvent) {
+    const mrEnd = mrEvent.getEndTime();
+    const lastToothbrush = myRecord.getValueFrom(LD, 'lastTake(toothbrush)')
+    const diffMin = (mrEnd.getTime() - lastToothbrush.getTime()) / 1000 / 60;
+    if (diffMin > 0) {
+      rbgo.setValueToRoutineList(interval, 'take(toothbrush)', Math.floor(diffMin));
+    }
+  }
 }

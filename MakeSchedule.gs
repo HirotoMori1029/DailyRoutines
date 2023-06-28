@@ -21,7 +21,7 @@ function onScheduleBtnClicked() {
     //外出中に明日のスケジュールを作成していたら
     if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOutside()) {
       rad.check('makeTomorrowSchedule()');
-      activateSheet(rad.sheets.main);
+      activateSheet(RAD);
     }
     //MorningRoutine中にスケジュールを作成していたら
     if (isCreatingOnMr()) {
@@ -29,7 +29,7 @@ function onScheduleBtnClicked() {
       cMrCal.setEvent(todayEvents, todayEventTitles);
       mr.optimize(makeCondition(cDate));
       mr.check('checkOrReschedule()');
-      activateSheet(mr.sheets.main);
+      activateSheet(MR);
     }
     saveScheduleInfo(scheduleData);
   }

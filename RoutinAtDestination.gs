@@ -4,8 +4,8 @@ function onRadStartBtnClicked() {
   const studyPlaceCal = getStudyPlaceCal();
   //イベントが存在しないなら
   if (!studyPlaceCal.event) {
-    if (ask(`場所イベントが作成されていません。現在時刻で作成しますか？`, Browser.Buttons.YES_NO_CANCEL)) {
-      makePlaceEventAtCurrentTime();
+    if (ask(`学習イベントが作成されていません。現在時刻で作成しますか？`, Browser.Buttons.YES_NO_CANCEL)) {
+      makeStudyEventAtCurrentTime();
     }
   }
   rad.onStart(studyPlaceCal);
@@ -46,7 +46,7 @@ function getStudyPlaceCal() {
 }
 
 //現在時刻で場所イベントを作成する関数
-function makePlaceEventAtCurrentTime() {
+function makeStudyEventAtCurrentTime() {
   const studyPlaceCal = getStudyPlaceCal();
   studyPlaceCal.title = Browser.inputBox("Input the title (=location) of the calendarEvent creating");
   studyPlaceCal.st = cDate
