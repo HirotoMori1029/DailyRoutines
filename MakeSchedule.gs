@@ -34,6 +34,18 @@ function onScheduleBtnClicked() {
     saveScheduleInfo(scheduleData);
   }
 }
+
+function onCancelBtnClicked() {
+  const sd = getScheduleDataFromSheet();
+  const msg = `${sd.eventday.getMonth() + 1}月${sd.eventday.getDate()}日
+    ${getDayStrFromDate(sd.eventday)}の予定をキャンセルしました。`;
+  if (ask(`以下のメッセージを送信しますか？ -> ${msg}`)) {
+    const grayEvents = todayEvents.filter(event => event.getColor() === CalendarApp.EventColor.GRAY);
+    grayEvents.forEach(event => event.deleteEvent());
+    sendLineMessage(msg);
+  }
+}
+
 //ScheduleSheetから情報を取得する関数
 function getScheduleDataFromSheet() {
   const sheet = ss.getSheetByName(MS);
@@ -228,7 +240,8 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   const mrCal = new CalendarProperty(MR, 60);
   mrCal.justWhenGoOut = false;
   const goOutCal = new CalendarProperty(GO, GO_OUT_TIME);
-  const famGoOutCal = new CalendarProperty(sp.getProperty('FAM_EVENT_TITLE'), GO_OUT_TIME);
+  //todo イベントタイトルを定義する
+  const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   const rbgoCal = new CalendarProperty(RBGO, 30);
   const rarhCal = new CalendarProperty(RARH, 30);
   const nrCal = new CalendarProperty(NR, 60 * 4);
@@ -242,9 +255,9 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   goOutCal.setEvent(events, titles);
   goOutCal.setScheduleMode(scheduleData);
 
-  famGoOutCal.calendar = CalendarApp.getCalendarById(sp.getProperty('MORI_FAMILY_CALENDAR_ID'));
-  famGoOutCal.defColor = CalendarApp.EventColor.YELLOW;
-  famGoOutCal.doneColor = famGoOutCal.defColor;
+  famGoOutCal.calendar = familyCalendar;
+  famGoOutCal.defColor = CalendarApp.EventColor.GRAY;
+  famGoOutCal.doneColor = CalendarApp.EventColor.YELLOW;
   famGoOutCal.st = goOutCal.st;
   famGoOutCal.ed = goOutCal.ed;
   famGoOutCal.setEvent(familyEvents, familyEventTitles);

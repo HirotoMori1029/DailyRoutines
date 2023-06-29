@@ -9,7 +9,7 @@ function onRarhStartBtnClicked() {
   const goOutCal = new CalendarProperty(GO, GO_OUT_TIME);
   goOutCal.setEvent(todayEvents, todayEventTitles);
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
-  const famGoOutCal = new CalendarProperty(sp.getProperty('FAM_EVENT_TITLE'), GO_OUT_TIME);
+  const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   famGoOutCal.setEvent(familiyEvents, familiyEventTitles);
   if (goOutCal.event) {
     goOutCal.setTimeEnd(cDate);

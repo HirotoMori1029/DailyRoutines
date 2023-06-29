@@ -17,11 +17,11 @@ function onRbgoEndBtnClicked() {
   rbgoCal.event = todayEvents[todayEventTitles.indexOf(rbgo.name)];
   const goOutCal = new CalendarProperty(GO, GO_OUT_TIME);
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
-  goOutCal.event = todayEvents[todayEventTitles.indexOf(GO)];
-  const famGoOutCal = new CalendarProperty(sp.getProperty('FAM_EVENT_TITLE'), GO_OUT_TIME);
-  famGoOutCal.defColor = CalendarApp.EventColor.YELLOW
+  goOutCal.setEvent(todayEvents, todayEventTitles);
+  const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
+  famGoOutCal.defColor = CalendarApp.EventColor.GRAY
   famGoOutCal.doneColor = CalendarApp.EventColor.YELLOW
-  famGoOutCal.event = familiyEvents[familiyEventTitles.indexOf(famGoOutCal.title)];
+  famGoOutCal.setEvent(familiyEvents, familiyEventTitles);
 
   if (rbgoCal.event) {
     rbgoCal.setTimeEnd();

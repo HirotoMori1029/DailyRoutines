@@ -20,6 +20,7 @@ const timeRange = getTimeRange(cDate);
 //スクリプトプロパティを取得
 const sp = PropertiesService.getScriptProperties();
 const myName = sp.getProperty('MY_NAME');
+const FAM_EVENT_TITLE = `${myName}外出`;
 const ss = SpreadsheetApp.openById(sp.getProperty('MY_ROUTINES_SHEET_ID'));
 //自分のカレンダー
 const myCalendar = CalendarApp.getCalendarById(sp.getProperty('MY_GMAIL_ADDRESS'));
