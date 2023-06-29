@@ -36,7 +36,7 @@ function onMrEndBtnClicked() {
   nr.optimize(todayCondition);
   nr.check('mrDone()');
   mr.lockColumn(1);
-  activateSheet(RBGO);
+  if (todayCondition.goOut) activateSheet(RBGO);
 }
 
 function onMrResetBtnClicked() {
