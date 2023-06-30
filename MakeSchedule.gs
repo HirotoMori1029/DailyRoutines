@@ -19,12 +19,12 @@ function onScheduleBtnClicked() {
     schedule(calendarProterties);
     if (!isNightHour(cDate)) sendLineMessage(msg);
     //外出中に明日のスケジュールを作成していたら
-    if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOutside()) {
+    if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOn(GO)) {
       rad.check('makeTomorrowSchedule()');
       activateSheet(RAD);
     }
     //MorningRoutine中にスケジュールを作成していたら
-    if (isCreatingOnMr()) {
+    if (isCreatingOn(MR)) {
       const cMrCal = new CalendarProperty(MR, 60);
       cMrCal.setEvent(todayEvents, todayEventTitles);
       mr.optimize(makeCondition(cDate));
@@ -122,17 +122,11 @@ function isCreatingNewTomorrowSchedule(eventday) {
   return isTomorrow && !myRecord.isScheduled(eventday);
 }
 
-//イベントgoOu'中にscheduleを作成しているか？
-function isCreatingOutside() {
-  const eventOutCal = new CalendarProperty(GO, GO_OUT_TIME);
-  eventOutCal.setEvent(todayEvents, todayEventTitles);
-  return eventOutCal.event && getTimingOfEvent(eventOutCal.event) === 'onTime';
-}
-
 //MR中に予定を作成しているか？
-function isCreatingOnMr() {
-  const currentMrEvent = todayEvents[todayEventTitles.indexOf(MR)];
-  return currentMrEvent ? getTimingOfEvent(currentMrEvent) === 'onTime' : false;
+function isCreatingOn(eventName) {
+  const refEvent = todayEvents[todayEventTitles.indexOf(eventName)];
+  if (refEvent) return getTimingOfEvent(refEvent) === 'onTime';
+  return false;
 }
 
 //イベント作成する対象日の情報をその日のカレンダーから取得する
