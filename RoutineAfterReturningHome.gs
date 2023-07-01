@@ -58,6 +58,7 @@ function onRarhEndBtnClicked() {
   rarh.saveLastDones();
   rarh.lockColumn(1)
   rarh.clearCheckAndColor();
+  activateSheet(NR);
 }
 
 function onRarhResetBtnClicked() {

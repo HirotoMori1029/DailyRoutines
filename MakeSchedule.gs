@@ -18,6 +18,7 @@ function onScheduleBtnClicked() {
   if (ask(msg + "\n以上の条件でスケジュールしますか？")) {
     schedule(calendarProterties);
     if (!isNightHour(cDate)) sendLineMessage(msg);
+    saveScheduleInfo(scheduleData);
     //外出中に明日のスケジュールを作成していたら
     if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOn(GO)) {
       rad.check('makeTomorrowSchedule()');
@@ -31,7 +32,10 @@ function onScheduleBtnClicked() {
       mr.check('checkOrReschedule()');
       activateSheet(MR);
     }
-    saveScheduleInfo(scheduleData);
+    //Nr中にスケジュールしていたら
+    if (isCreatingOn(NR)) {
+      activateSheet(NR);
+    }
   }
 }
 
