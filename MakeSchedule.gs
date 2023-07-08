@@ -44,8 +44,12 @@ function onCancelBtnClicked() {
   const msg = `${sd.eventday.getMonth() + 1}月${sd.eventday.getDate()}日
     ${getDayStrFromDate(sd.eventday)}の予定をキャンセルしました。`;
   if (ask(`以下のメッセージを送信しますか？ -> ${msg}`)) {
-    const grayEvents = todayEvents.filter(event => event.getColor() === CalendarApp.EventColor.GRAY);
+    const gray = CalendarApp.EventColor.GRAY
+    const grayEvents = todayEvents.filter(event => event.getColor() === gray);
     grayEvents.forEach(event => event.deleteEvent());
+    const grayFamilyEvents = familiyEvents.filter(event => {
+      return event.getTitle() === FAM_EVENT_TITLE && event.getColor() === gray});
+    grayFamilyEvents.forEach(event => event.deleteEvent());
     sendLineMessage(msg);
   }
 }
