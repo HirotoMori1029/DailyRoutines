@@ -32,11 +32,11 @@ function onMrEndBtnClicked() {
   }
   mr.saveLastDones();
   mr.clearCheckAndColor();
-  writeWhatToTakeWith(todayCondition);
   nr.optimize(todayCondition);
   nr.check('mrDone()');
   mr.lockColumn(1);
   if (todayCondition.goOut) {
+    writeWhatToTakeWith(todayCondition);
     activateSheet(RBGO);
   } else {
     activateSheet(NR);
