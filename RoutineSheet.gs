@@ -4,7 +4,6 @@ class RoutineSheet {
     this.name = name;
     this.sheets = {
       main: ss.getSheetByName(this.name),
-      //todo RoutineListの命名規則を得る関数を作成し、それを実行してシートを定義する
       routineList: ss.getSheetByName(getRoutineListSheetNameByRoutineName(this.name))
     };
     this.startRow = 2;

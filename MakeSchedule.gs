@@ -178,15 +178,17 @@ function isStudySchdule(calendarPropeties) {
 }
 
 //lastCarRideが３日以上離れているなら
-function isCarIdleFor3days(eventday) {
+function isCarIdleFor3days(scheduleData) {
   const lastCarRide = myRecord.getValueFrom(LD, 'lastCar');
-  return (eventday.getTime() - lastCarRide.getTime()) / 1000 / 60 / 60 / 24 >= 3;
+  const isCarIdle = (scheduleData.eventday.getTime() - lastCarRide.getTime()) / 1000 / 60 / 60 / 24 >= 3;
+  return isCarIdle && (scheduleData.transportation !== car);
 }
 
 //lastExerciseが３日以上離れているなら
-function isExerciseIdleFor3days(eventday) {
+function isExerciseIdleFor3days(scheduleData) {
   const lastExercise = myRecord.getValueFrom(LD, 'lastExercise');
-  return (eventday.getTime() - lastExercise.getTime()) / 1000 / 60 / 60 / 24 >= 3;
+  const isIdle = (scheduleData.getTime() - lastExercise.getTime()) / 1000 / 60 / 60 / 24 >= 3;
+  return isIdle && (scheduleData.transportation !== 'bicycle');
 }
 
 //日付情報に関する問題をバリデーションする
@@ -204,10 +206,10 @@ function showProgrem(scheduleData, calendarPropeties) {
   if (isEarlyRbgo(calendarPropeties, scheduleData)) {
     msg += 'rbgoの時間がmrの終了より早いです\n';
   }
-  if (isCarIdleFor3days(scheduleData.eventday)) {
+  if (isCarIdleFor3days(scheduleData)) {
     msg += '3日間以上車に乗っていません\n';
   }
-  if (isExerciseIdleFor3days(scheduleData.eventday)) {
+  if (isExerciseIdleFor3days(scheduleData)) {
     msg += '3日間以上運動していません\n';
   }
   if (msg) Browser.msgBox(msg);
