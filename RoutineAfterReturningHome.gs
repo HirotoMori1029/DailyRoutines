@@ -11,6 +11,12 @@ function onRarhStartBtnClicked() {
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
   const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   famGoOutCal.setEvent(familiyEvents, familiyEventTitles);
+  if (todayEventTitles.includes('Sauna')) {
+    const saunaCal = new CalendarProperty('Sauna', 60);
+    saunaCal.setEvent(todayEvents, todayEventTitles);
+    if (ask('set Sauna calendar end to current time?')) 
+    saunaCal.setTimeEnd();
+  }
   if (goOutCal.event) {
     goOutCal.setTimeEnd(cDate);
     goOutCal.event.setColor(goOutCal.doneColor);

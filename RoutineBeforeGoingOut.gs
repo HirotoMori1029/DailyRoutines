@@ -36,6 +36,7 @@ function onRbgoEndBtnClicked() {
   nr.check("rbgoDone()")
   rbgo.lockColumn(1);
   rbgo.saveLastDones();
+  activateSheet(RARH);
   Browser.msgBox('Remember that you will lock your house!, Enter(Ctrl + W)');
 }
 
@@ -85,7 +86,7 @@ function setToothbrushInterval(rbgo) {
     const lastToothbrush = myRecord.getValueFrom(LD, 'lastTake(toothbrush)')
     const diffMin = (mrEnd.getTime() - lastToothbrush.getTime()) / 1000 / 60;
     if (diffMin > 0) {
-      rbgo.setValueToRoutineList(interval, 'take(toothbrush)', Math.floor(diffMin));
+      rbgo.setValueToRoutineList('interval', 'take(toothbrush)', Math.floor(diffMin));
     }
   }
 }
