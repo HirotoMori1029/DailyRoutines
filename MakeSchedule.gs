@@ -179,15 +179,15 @@ function isStudySchdule(calendarPropeties) {
 
 //lastCarRideが３日以上離れているなら
 function isCarIdleFor3days(scheduleData) {
-  const lastCarRide = myRecord.getValueFrom(LD, 'lastCar');
+  const lastCarRide = myRecord.getValueFromLastDones('lastCar', 'lastTime');
   const isCarIdle = (scheduleData.eventday.getTime() - lastCarRide.getTime()) / 1000 / 60 / 60 / 24 >= 3;
-  return isCarIdle && (scheduleData.transportation !== car);
+  return isCarIdle && (scheduleData.transportation !== 'car');
 }
 
 //lastExerciseが３日以上離れているなら
 function isExerciseIdleFor3days(scheduleData) {
-  const lastExercise = myRecord.getValueFrom(LD, 'lastExercise');
-  const isIdle = (scheduleData.getTime() - lastExercise.getTime()) / 1000 / 60 / 60 / 24 >= 3;
+  const lastExercise = myRecord.getValueFromLastDones('lastExercise', 'lastTime');
+  const isIdle = (scheduleData.eventday.getTime() - lastExercise.getTime()) / 1000 / 60 / 60 / 24 >= 3;
   return isIdle && (scheduleData.transportation !== 'bicycle');
 }
 
@@ -222,12 +222,12 @@ function askForMakeEvent(msg) {
 
 function saveScheduleInfo(scheduleData) {
   //イベント日を記録
-  myRecord.saveValueTo(SI, 'eventday', scheduleData.eventday, scheduleData.eventday);
+  myRecord.saveValueToScheudleInfo('eventday', scheduleData.eventday, scheduleData.eventday);
   //goKeyValuesを記録
   const scheduleDataJson = JSON.stringify(scheduleData);
-  myRecord.saveValueTo(SI, 'scheduleData', scheduleDataJson, scheduleData.eventday);
+  myRecord.saveValueToScheudleInfo('scheduleData', scheduleDataJson, scheduleData.eventday);
   //アップデート日を記録
-  myRecord.saveValueTo(SI, 'updated', cDate, scheduleData.eventday);
+  myRecord.saveValueToScheudleInfo('updated', cDate, scheduleData.eventday);
 }
 
 //カレンダープロパティに値を入れる

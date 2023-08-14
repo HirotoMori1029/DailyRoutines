@@ -17,6 +17,7 @@ function onNrEndBtnClicked() {
   nr.saveLastDones();
   nr.clearCheckAndColor();
   nr.lockColumn(1);
+  activateSheet(MR);
   Browser.msgBox('Good job!, make sure sayGoogleToGoodNight!!')
 }
 

@@ -11,7 +11,7 @@ function onMrStartBtnClicked() {
   confirmEventDelete();
   //スケジュールされていて、それが夜間ならば
   if (myRecord.isScheduled(cDate)) {
-    const updated = myRecord.getValueFrom('ScheduleInfo', 'updated', cDate);
+    const updated = myRecord.getValueFromScheduleInfo('updated', cDate);
     const todayScheduleData = myRecord.getScheduleData(cDate)
     if (isNightHour(updated)) sendRemainMessage(todayScheduleData);
   }

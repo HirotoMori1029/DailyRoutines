@@ -142,7 +142,7 @@ class RoutineSheet {
     intervalRoutines.forEach(routine => {
       if (this.hasBeenDone(routine.name)) {
         const valueName = `last${routine.name[0].toUpperCase() + routine.name.slice(1)}`
-        myRecord.saveValueTo(LD, valueName, cDate);
+        myRecord.saveValueToLastDones(valueName, cDate);
       }
     })
   }

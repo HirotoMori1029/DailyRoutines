@@ -80,11 +80,11 @@ function onRarhOptimizeBtnClicked() {
 
 function saveTransportationValue(transportation) {
   if (transportation.includes('bicycle')) {
-    myRecord.saveValueTo(LD, 'lastBicycle', cDate);
-    myRecord.saveValueTo(LD, 'lastExercise', cDate);
+    myRecord.saveValueToLastDones('lastBicycle', cDate);
+    myRecord.saveValueToLastDones('lastExercise', cDate);
   }
   if (transportation.includes('car')) {
-    myRecord.saveValueTo(LD, 'lastCar', cDate);
+    myRecord.saveValueToLastDones('lastCar', cDate);
   }
 }
 

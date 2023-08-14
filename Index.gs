@@ -98,38 +98,123 @@ function makeCondition(date) {
 //オブジェクト自体に頻繁に利用するメソッドを持たせている
 function getMyRecord() {
 
-  function saveValueTo(sheetName, valueName, value, date = new Date()) {
+  function getRangeByValueName(sheetName, valueName) {
     const sheet = ss.getSheetByName(sheetName);
-    const range = sheet.createTextFinder(valueName).findNext();
+    return sheet.createTextFinder(valueName).findNext();
+  }
+
+  // function saveValueTo(sheetName, valueName, value, date = new Date()) {
+  //   const sheet = ss.getSheetByName(sheetName);
+  //   const range = sheet.createTextFinder(valueName).findNext();
+  //   if (range) {
+  //     range.offset(...getOffset(sheetName, date)).setValue(value);
+  //   } else {
+  //     const nameRng = sheet.getRange(sheet.getLastRow() + 1, 1).setValue(valueName);
+  //     nameRng.offset(0, 1).setValue(value);
+  //   }
+  // }
+
+  function saveValueToScheudleInfo(valueName, value, date = new Date()) {
+    const range = getRangeByValueName(SI, valueName);
     if (range) {
-      range.offset(...getOffset(sheetName, date)).setValue(value);
+      let dayOfWeek = date.getDay();
+      dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+      range.offset(dayOfWeek, 0).setValue(value);
     } else {
-      const nameRng = sheet.getRange(sheet.getLastRow() + 1, 1).setValue(valueName);
-      nameRng.offset(0, 1).setValue(value);
+      Browser.msgBox("couldn't save because of invalid value name");
     }
   }
 
-  function getValueFrom(sheetName, valueName, date = new Date()) {
-    const sheet = ss.getSheetByName(sheetName);
-    const range = sheet.createTextFinder(valueName).findNext();
+
+  function saveValueToLastDones(valueName, value = cDate) {
+    const range = getRangeByValueName(LD, valueName);
+    const ldSheet = ss.getSheetByName(LD);
+    const allvalues = ldSheet.getDataRange().getValues();
+    const headers = allvalues.shift();
+
     if (range) {
-      return range.offset(...getOffset(sheetName, date)).getValue();
-    }
-    return null;
 
+      const pLastTime = range.offset(0, headers.indexOf('lastTime')).getValue();
+      const pIntervalAve = range.offset(0, headers.indexOf('intervalAve')).getValue();
+      const pIntegral = range.offset(0, headers.indexOf('integral')).getValue();
+      const pLastInterval = range.offset(0, headers.indexOf('lastInterval')).getValue();
+      range.offset(0, headers.indexOf('lastTime')).setValue(value);
+      range.offset(0, headers.indexOf('integral')).setValue(pIntegral + 1);
+      const lastInterval = value.getTime() - pLastTime.getTime();
+      const intervalAve = pLastInterval === 0 ? lastInterval : (lastInterval + pIntervalAve) / 2;
+      range.offset(0, headers.indexOf('lastInterval')).setValue(lastInterval);
+      range.offset(0, headers.indexOf('intervalAve')).setValue(intervalAve);
+      range.offset(0, headers.indexOf('intervalHourAve')).setValue(intervalAve / (1000 * 60 * 60));
+
+    } else {  //valueNameが存在しない場合、新しくレンジを生成する
+
+      const formatCopySourceRange = ldSheet.getRange(ldSheet.getLastRow(), 1, 1, headers.length);
+      const sourceNumberFormats = formatCopySourceRange.getNumberFormats();
+      const sourceBackgrounds = formatCopySourceRange.getBackgrounds(); //背景の色を取得
+      const sourceFontWeights = formatCopySourceRange.getFontWeights(); //太字などのフォーマットウェイトを取得
+      const sourceHorizontalAlignments = formatCopySourceRange.getHorizontalAlignments(); // 水平方向の配置を取得
+      const targetRange = formatCopySourceRange.offset(1, 0);
+      targetRange
+        .setNumberFormats(sourceNumberFormats)
+        .setBackgrounds(sourceBackgrounds)
+        .setFontWeights(sourceFontWeights)
+        .setHorizontalAlignments(sourceHorizontalAlignments)
+        .setBorder(true, true, true, true, true, true, "black", SpreadsheetApp.BorderStyle.SOLID); //普通の罫線を引く
+
+      const nameRng = targetRange.getCell(1, headers.indexOf('name') + 1);
+      nameRng.setValue(valueName);
+      nameRng.offset(0, headers.indexOf('lastTime')).setValue(value);
+      nameRng.offset(0, headers.indexOf('intervalHourAve')).setValue(0);
+      nameRng.offset(0, headers.indexOf('integral')).setValue(0);
+      nameRng.offset(0, headers.indexOf('intervalAve')).setValue(0);
+      nameRng.offset(0, headers.indexOf('lastInterval')).setValue(0);
+    }
   }
 
-  function getOffset(sheetName, date) {
-    if (sheetName == SI) {
+  function getValueFromScheduleInfo(valueName, date = new Date()) {
+    const range = getRangeByValueName(SI, valueName);
+    if (range) {
       const dayOfWeek = date.getDay();
-      return [
-        dayOfWeek === 0 ? 7 : dayOfWeek,
-        0
-      ];
-    } else {
-      return [0, 1];
+      const rowNumber = dayOfWeek === 0 ? 7 : dayOfWeek;
+      return range.offset(rowNumber, 0).getValue();
     }
+    return;
   }
+
+  function getValueFromLastDones(valueName, propertyName) {
+    const range = getRangeByValueName(LD, valueName);
+    if (range) {
+      const headers = ss.getSheetByName(LD).getDataRange().getValues().shift();
+      if (headers.includes(propertyName)) {
+        return range.offset(0, headers.indexOf(propertyName)).getValue();
+      }
+    }
+    return;
+  }
+
+  //getValueFrom, getOffsetが使われている場所を一括変更する
+
+  // function getValueFrom(sheetName, valueName, date = new Date()) {
+  //   const sheet = ss.getSheetByName(sheetName);
+  //   const range = sheet.createTextFinder(valueName).findNext();
+  //   if (range) {
+  //     return range.offset(...getOffset(sheetName, date)).getValue();
+  //   }
+  //   return null;
+
+  // }
+
+  // function getOffset(sheetName, date) {
+  //   if (sheetName == SI) {
+  //     const dayOfWeek = date.getDay();
+  //     return [
+  //       dayOfWeek === 0 ? 7 : dayOfWeek,
+  //       0
+  //     ];
+  //   } else {
+  //     return [0, 1];
+  //   }
+  // }
 
   //その日がスケジュールされているかを返す関数
   function isScheduled(date) {
@@ -147,8 +232,8 @@ function getMyRecord() {
     return eventdays.some(eDay => date.toDateString() === eDay.toDateString())
   }
 
-  function getScheduleData(date) {
-    const scheduleDataJson = getValueFrom(SI, 'scheduleData', date);
+  function getScheduleData(date = new Date()) {
+    const scheduleDataJson = getValueFromScheduleInfo('scheduleData', date);
     if (scheduleDataJson) {
       return JSON.parse(scheduleDataJson, (key, value) => {
         if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)) {
@@ -162,8 +247,12 @@ function getMyRecord() {
   }
 
   const myRecord = {
-    saveValueTo,
-    getValueFrom,
+    saveValueToLastDones,
+    saveValueToScheudleInfo,
+    getValueFromLastDones,
+    getValueFromScheduleInfo,
+    // saveValueTo,
+    // getValueFrom,
     isScheduled,
     getScheduleData
   };
@@ -173,7 +262,7 @@ function getMyRecord() {
 
 // valueNameとintervalを渡すとintervalを超えているか返す関数
 function hasDoneOutOfInterval(valueName, interval) {
-  const lastDone = myRecord.getValueFrom(LD, valueName);
+  const lastDone = myRecord.getValueFromLastDones(valueName, 'lastTime');
   if (lastDone) {
     return (new Date().getTime() - lastDone.getTime()) / 1000 / 60 / 60 > interval;
   }
