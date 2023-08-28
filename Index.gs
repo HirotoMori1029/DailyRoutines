@@ -103,17 +103,6 @@ function getMyRecord() {
     return sheet.createTextFinder(valueName).findNext();
   }
 
-  // function saveValueTo(sheetName, valueName, value, date = new Date()) {
-  //   const sheet = ss.getSheetByName(sheetName);
-  //   const range = sheet.createTextFinder(valueName).findNext();
-  //   if (range) {
-  //     range.offset(...getOffset(sheetName, date)).setValue(value);
-  //   } else {
-  //     const nameRng = sheet.getRange(sheet.getLastRow() + 1, 1).setValue(valueName);
-  //     nameRng.offset(0, 1).setValue(value);
-  //   }
-  // }
-
   function saveValueToScheudleInfo(valueName, value, date = new Date()) {
     const range = getRangeByValueName(SI, valueName);
     if (range) {
@@ -144,7 +133,7 @@ function getMyRecord() {
       const intervalAve = pLastInterval === 0 ? lastInterval : (lastInterval + pIntervalAve) / 2;
       range.offset(0, headers.indexOf('lastInterval')).setValue(lastInterval);
       range.offset(0, headers.indexOf('intervalAve')).setValue(intervalAve);
-      range.offset(0, headers.indexOf('intervalHourAve')).setValue(intervalAve / (1000 * 60 * 60));
+      range.offset(0, headers.indexOf('intervalDayAve')).setValue(intervalAve / (1000 * 60 * 60 * 24));
 
     } else {  //valueNameが存在しない場合、新しくレンジを生成する
 
@@ -164,7 +153,7 @@ function getMyRecord() {
       const nameRng = targetRange.getCell(1, headers.indexOf('name') + 1);
       nameRng.setValue(valueName);
       nameRng.offset(0, headers.indexOf('lastTime')).setValue(value);
-      nameRng.offset(0, headers.indexOf('intervalHourAve')).setValue(0);
+      nameRng.offset(0, headers.indexOf('intervalDayAve')).setValue(0);
       nameRng.offset(0, headers.indexOf('integral')).setValue(0);
       nameRng.offset(0, headers.indexOf('intervalAve')).setValue(0);
       nameRng.offset(0, headers.indexOf('lastInterval')).setValue(0);
@@ -191,30 +180,6 @@ function getMyRecord() {
     }
     return;
   }
-
-  //getValueFrom, getOffsetが使われている場所を一括変更する
-
-  // function getValueFrom(sheetName, valueName, date = new Date()) {
-  //   const sheet = ss.getSheetByName(sheetName);
-  //   const range = sheet.createTextFinder(valueName).findNext();
-  //   if (range) {
-  //     return range.offset(...getOffset(sheetName, date)).getValue();
-  //   }
-  //   return null;
-
-  // }
-
-  // function getOffset(sheetName, date) {
-  //   if (sheetName == SI) {
-  //     const dayOfWeek = date.getDay();
-  //     return [
-  //       dayOfWeek === 0 ? 7 : dayOfWeek,
-  //       0
-  //     ];
-  //   } else {
-  //     return [0, 1];
-  //   }
-  // }
 
   //その日がスケジュールされているかを返す関数
   function isScheduled(date) {
@@ -251,8 +216,6 @@ function getMyRecord() {
     saveValueToScheudleInfo,
     getValueFromLastDones,
     getValueFromScheduleInfo,
-    // saveValueTo,
-    // getValueFrom,
     isScheduled,
     getScheduleData
   };

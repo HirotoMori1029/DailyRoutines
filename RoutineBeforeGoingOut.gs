@@ -83,10 +83,10 @@ function setToothbrushInterval(rbgo) {
   const mrEvent = todayEvents[todayEventTitles.indexOf(MR)];
   if (mrEvent) {
     const mrEnd = mrEvent.getEndTime();
-    const lastToothbrush = myRecord.getValueFromLastDones('lastTake(toothbrush)', lastTime);
+    const lastToothbrush = myRecord.getValueFromLastDones('lastTake(toothbrush, cup)', 'lastTime');
     const diffMin = (mrEnd.getTime() - lastToothbrush.getTime()) / 1000 / 60;
     if (diffMin > 0) {
-      rbgo.setValueToRoutineList('interval', 'take(toothbrush)', Math.floor(diffMin));
+      rbgo.setValueToRoutineList('interval', 'take(toothbrush, cup)', Math.floor(diffMin));
     }
   }
 }
