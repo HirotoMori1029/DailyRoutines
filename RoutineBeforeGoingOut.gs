@@ -1,3 +1,7 @@
+//StringDefinition
+
+const brush = 'brush(teeth)';
+
 
 //StartBtnが押されたときの処理
 function onRbgoStartBtnClicked() {
@@ -83,10 +87,10 @@ function setToothbrushInterval(rbgo) {
   const mrEvent = todayEvents[todayEventTitles.indexOf(MR)];
   if (mrEvent) {
     const mrEnd = mrEvent.getEndTime();
-    const lastToothbrush = myRecord.getValueFromLastDones('lastTake(toothbrush, cup)', 'lastTime');
+    const lastToothbrush = myRecord.getValueFromLastDones(getLDSaveNameByName(brush), 'lastTime');
     const diffMin = (mrEnd.getTime() - lastToothbrush.getTime()) / 1000 / 60;
     if (diffMin > 0) {
-      rbgo.setValueToRoutineList('interval', 'take(toothbrush, cup)', Math.floor(diffMin));
+      rbgo.setValueToRoutineList('interval', brush, Math.floor(diffMin));
     }
   }
 }

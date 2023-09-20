@@ -432,6 +432,10 @@ function activateSheet(sheetName) {
   active.setActiveSheet(to);
 }
 
+function getLDSaveNameByName(name = 'nameless!!') {
+  return `last${name[0].toUpperCase() + name.slice(1)}`;
+}
+
 
 function grobalTest() {
   const tr = new RoutineSheet('TestRoutine');

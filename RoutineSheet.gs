@@ -141,7 +141,7 @@ class RoutineSheet {
     const intervalRoutines = this.rListData.filter(routine => routine.interval);
     intervalRoutines.forEach(routine => {
       if (this.hasBeenDone(routine.name)) {
-        const valueName = `last${routine.name[0].toUpperCase() + routine.name.slice(1)}`
+        const valueName = getLDSaveNameByName(routine.name);
         myRecord.saveValueToLastDones(valueName, cDate);
       }
     })
