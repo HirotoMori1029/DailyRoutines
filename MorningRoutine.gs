@@ -39,7 +39,7 @@ function onMrEndBtnClicked() {
     writeWhatToTakeWith(todayCondition);
     activateSheet(RBGO);
   } else {
-    activateSheet(NR);
+    activateSheet(LD);
   }
 }
 
