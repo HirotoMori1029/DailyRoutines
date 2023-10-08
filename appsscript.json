@@ -9,6 +9,10 @@
       "menuName": "setCurrentDate",
       "functionName": "setCurrentDate",
       "defaultShortcut": "Ctrl+Alt+Shift+0"
+    }, {
+      "menuName": "setColorToTimeOver",
+      "functionName": "setColorToTimeOver",
+      "defaultShortcut": "Ctrl+Alt+Shift+9"
     }]
   }
 }
