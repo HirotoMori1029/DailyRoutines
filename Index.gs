@@ -15,6 +15,8 @@ const MS = 'MakeSchedule';
 const LTTW = 'ListToTakeWith';
 const IS_STUDY = 'isStudy';
 const cDate = new Date();
+const INTERVAL_LIMIT = 0.4;
+const timeToDay = 1 / (1000 * 60 * 60 * 24)
 const timeRange = getTimeRange(cDate);
 
 //スクリプトプロパティを取得
@@ -223,11 +225,12 @@ function getMyRecord() {
   return myRecord
 }
 
-// valueNameとintervalを渡すとintervalを超えているか返す関数
-function hasDoneOutOfInterval(valueName, interval) {
+// valueNameを渡すと現在時刻で換算してtargetValueを超えているか返す関数
+function isTimeOver(valueName) {
   const lastDone = myRecord.getValueFromLastDones(valueName, 'lastTime');
+  const targetValue = myRecord.getValueFromLastDones(valueName, 'targetValue');
   if (lastDone) {
-    return (new Date().getTime() - lastDone.getTime()) / 1000 / 60 / 60 > interval;
+    return (cDate.getTime() - lastDone.getTime()) * timeToDay > targetValue;
   }
   return false;
 }

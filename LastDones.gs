@@ -1,6 +1,3 @@
-const INTERVAL_LIMIT = 0.4;
-const timeToDay = 1 / (1000 * 60 * 60 * 24)
-
 function setCurrentDate() {
   const sheet = ss.getSheetByName(LD);
   const names = sheet.getRange(2, 1, sheet.getLastRow()).getValues().flat();

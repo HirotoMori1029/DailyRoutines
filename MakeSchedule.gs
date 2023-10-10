@@ -172,31 +172,10 @@ function isEarlyRbgo(calendarPropeties, scheduleData) {
   return false;
 }
 
-
-function isStudySchdule(calendarPropeties) {
-  return calendarPropeties.some(calp => calp.desc.includes(IS_STUDY));
-}
-
-//lastCarRideが３日以上離れているなら
-function isCarIdleFor3days(scheduleData) {
-  const lastCarRide = myRecord.getValueFromLastDones('lastCar', 'lastTime');
-  const isCarIdle = (scheduleData.eventday.getTime() - lastCarRide.getTime()) / 1000 / 60 / 60 / 24 >= 3;
-  return isCarIdle && (scheduleData.transportation !== 'car');
-}
-
-//lastExerciseが３日以上離れているなら
-function isExerciseIdleFor3days(scheduleData) {
-  const lastExercise = myRecord.getValueFromLastDones('lastExercise', 'lastTime');
-  const isIdle = (scheduleData.eventday.getTime() - lastExercise.getTime()) / 1000 / 60 / 60 / 24 >= 3;
-  return isIdle && (scheduleData.transportation !== 'bicycle');
-}
-
 //日付情報に関する問題をバリデーションする
 function showProgrem(scheduleData, calendarPropeties) {
   let msg = '';
-  if (!isStudySchdule(calendarPropeties)) {
-    msg += '学習予定がありません';
-  }
+
   if (getSaunaAtWed(scheduleData.goSauna, scheduleData.eventday)) {
     msg += '目的地のSaunaが非営業日の可能性があります\n';
   }
@@ -206,12 +185,7 @@ function showProgrem(scheduleData, calendarPropeties) {
   if (isEarlyRbgo(calendarPropeties, scheduleData)) {
     msg += 'rbgoの時間がmrの終了より早いです\n';
   }
-  if (isCarIdleFor3days(scheduleData)) {
-    msg += '3日間以上車に乗っていません\n';
-  }
-  if (isExerciseIdleFor3days(scheduleData)) {
-    msg += '3日間以上運動していません\n';
-  }
+ 
   if (msg) Browser.msgBox(msg);
 }
 

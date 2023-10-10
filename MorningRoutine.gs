@@ -96,13 +96,9 @@ function optimizeMrList(conditions) {
       routine.always ||
       (routine.goOut && conditions.goOut) ||
       (routine.meetSomeone && conditions.meetSomeone) ||
-      (routine.interval && hasDoneOutOfInterval(
-        `last${routine.name[0].toUpperCase() + routine.name.slice(1)}`,
-        routine.interval)
-      ) ||
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name))) ||
       (routine.name === 'check(Gmail)' && isUnreadGmail()) ||
       (routine.isStudy && conditions.isStudy);
-
 
     //期間monthを満たせているか
     if (routine.startMonth <= routine.endMonth) {

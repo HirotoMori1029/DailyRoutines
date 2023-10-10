@@ -14,8 +14,10 @@ function onRarhStartBtnClicked() {
   if (todayEventTitles.includes('Sauna')) {
     const saunaCal = new CalendarProperty('Sauna', 60);
     saunaCal.setEvent(todayEvents, todayEventTitles);
-    if (ask('set Sauna calendar end to current time?')) 
-    saunaCal.setTimeEnd();
+    if (ask('set Sauna calendar end to current time?')) {
+      saunaCal.setTimeEnd();
+    }
+    myRecord.saveValueToLastDones('take(bath)', cDate);
   }
   if (goOutCal.event) {
     goOutCal.setTimeEnd(cDate);
@@ -95,10 +97,7 @@ function optimizeRarhList(conditions) {
       routine.always ||
       (routine.goSauna && conditions.goSauna) ||
       (routine.whenBicycle && conditions.transportation.includes('bicycle'));
-    (routine.interval && hasDoneOutOfInterval(
-      `last${routine.name[0].toUpperCase() + routine.name.slice(1)}`,
-      routine.interval)
-    );
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name)));
 
     //期間monthを満たせているか
     if (routine.startMonth <= routine.endMonth) {

@@ -11,10 +11,11 @@ function testForSetToothbrushInterval() {
   setToothbrushInterval(rbgo);
 }
 
-function saveValueToLastDonesTest() {
-  myRecord.saveValueToLastDones('lastTest', cDate);
-  const lastTime = myRecord.getValueFromLastDones('lastTest', 'lastTime');
+function saveValueToLastDonesTest(saveName = 'lastTest') {
+  myRecord.saveValueToLastDones(saveName, cDate);
+  const lastTime = myRecord.getValueFromLastDones(saveName, 'lastTime');
   Logger.log(`lastTime = ${lastTime}`);
-  const ihv = myRecord.getValueFromLastDones('lastTest', 'intervalHourAve');
+  const ihv = myRecord.getValueFromLastDones(saveName, 'intervalHourAve');
   Logger.log(`intervalHourAve = ${ihv}`);
 }
+

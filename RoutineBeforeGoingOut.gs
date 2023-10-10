@@ -8,7 +8,6 @@ function onRbgoStartBtnClicked() {
   const rbgo = new RoutineSheet(RBGO);
   rbgo.optimizeList = optimizeRbgoList;
   const rbgoCal = new CalendarProperty(RBGO, 30)
-  setToothbrushInterval(rbgo);
   rbgo.onStart(rbgoCal);
 }
 
@@ -65,11 +64,7 @@ function optimizeRbgoList(conditions) {
       (routine.goSauna && conditions.goSauna) ||
       (routine.whenBicycle && conditions.transportation.includes('bicycle')) ||
       (routine.isStudy && conditions.isStudy) ||
-      (routine.interval && hasDoneOutOfInterval(
-        `last${routine.name[0].toUpperCase() + routine.name.slice(1)}`,
-        routine.interval)
-      );
-
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name)));
 
     //期間monthを満たせているか
     if (routine.startMonth <= routine.endMonth) {
@@ -81,16 +76,4 @@ function optimizeRbgoList(conditions) {
     }
     return condition;
   })
-}
-
-function setToothbrushInterval(rbgo) {
-  const mrEvent = todayEvents[todayEventTitles.indexOf(MR)];
-  if (mrEvent) {
-    const mrEnd = mrEvent.getEndTime();
-    const lastToothbrush = myRecord.getValueFromLastDones(getLDSaveNameByName(brush), 'lastTime');
-    const diffMin = (mrEnd.getTime() - lastToothbrush.getTime()) / 1000 / 60;
-    if (diffMin > 0) {
-      rbgo.setValueToRoutineList('interval', brush, Math.floor(diffMin));
-    }
-  }
 }
