@@ -230,7 +230,7 @@ function isTimeOver(valueName) {
   const lastDone = myRecord.getValueFromLastDones(valueName, 'lastTime');
   const targetValue = myRecord.getValueFromLastDones(valueName, 'targetValue');
   if (lastDone) {
-    return (cDate.getTime() - lastDone.getTime()) * timeToDay > targetValue;
+    return (cDate.getTime() - lastDone.getTime()) * timeToDay >= targetValue;
   }
   return false;
 }
