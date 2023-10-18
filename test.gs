@@ -17,5 +17,6 @@ function saveValueToLastDonesTest(saveName = 'lastTest') {
   Logger.log(`lastTime = ${lastTime}`);
   const ihv = myRecord.getValueFromLastDones(saveName, 'intervalHourAve');
   Logger.log(`intervalHourAve = ${ihv}`);
+  setColorToLastDones();
 }
 

@@ -15,7 +15,8 @@ const MS = 'MakeSchedule';
 const LTTW = 'ListToTakeWith';
 const IS_STUDY = 'isStudy';
 const cDate = new Date();
-const INTERVAL_LIMIT = 0.4;
+const INTERVAL_LIMIT_1 = 0.3;
+const INTERVAL_LIMIT_2 = -0.2;
 const timeToDay = 1 / (1000 * 60 * 60 * 24)
 const timeRange = getTimeRange(cDate);
 

@@ -1,15 +1,14 @@
 function setCurrentDate() {
   const sheet = ss.getSheetByName(LD);
   const names = sheet.getRange(2, 1, sheet.getLastRow()).getValues().flat();
-  Logger.log(names);
   const activeCell = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getActiveCell();
   const rowNumber = activeCell.getLastRow();
   const name = names[rowNumber - 2];
-  Logger.log(name);
   myRecord.saveValueToLastDones(name);
+  setColorToLastDones();
 }
 
-function setColorToTimeOver() {
+function setColorToLastDones() {
   const sheet = ss.getSheetByName(LD);
   const values = sheet.getDataRange().getValues();
   const headers = values.shift();
@@ -24,10 +23,12 @@ function setColorToTimeOver() {
     const diff = ((cInterval - targetValue) / targetValue);
     const bkRange = sheet.getRange(index + 2, lastTimeIndex + 1);
 
-    if (diff >= 0.4) {
-      bkRange.setBackground('#cdb4db');
+    if (diff >= INTERVAL_LIMIT_1) {
+      bkRange.setBackground('#ef476f');
+    } else if (diff >= INTERVAL_LIMIT_2){
+      bkRange.setBackground('#ffd166');
     } else {
-      bkRange.setBackground(null);
+      bkRange.setBackground('#06d6a0');
     }
   })
 }

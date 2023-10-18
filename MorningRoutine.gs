@@ -40,7 +40,7 @@ function onMrEndBtnClicked() {
     activateSheet(RBGO);
   } else {
     activateSheet(LD);
-    setColorToTimeOver();
+    setColorToLastDones();
   }
 }
 
