@@ -10,12 +10,18 @@ class RoutineSheet {
     //RoutineListからデータを取得して格納する
     this.rValues = this.sheets.routineList.getDataRange().getValues();
     this.headers = this.rValues[0];
-    this.rListData = this.rValues.slice(1).map(row => {
-      return this.headers.reduce((obj, header, index) => {
-        obj[header] = row[index];
-        return obj;
+    this.rListData = this.rValues
+    .slice(1)
+      .map((routineInfo, routineIndex) => {
+        return this.headers.reduce((obj, header, headerIndex) => {
+          obj[header] = routineInfo[headerIndex];
+          if (header === 'name') {
+            const nameRange = this.sheets.routineList.getRange(routineIndex + 2, headerIndex + 1);
+            obj['bgColor'] = nameRange.getBackground();
+          }
+          return obj;
       }, {})
-    })
+  })
     this.url = `${ss.getUrl()}#gid=${this.sheets.main.getSheetId()}`;
   }
 
@@ -26,22 +32,14 @@ class RoutineSheet {
     const deleteRng = this.sheets.main.getRange(this.startRow, 1, lastRow, lastCol);
     deleteRng.removeCheckboxes().clear();
     //見逃し合計回数
-    const missedSum = routineList.reduce((acc, routine) => acc += routine.missed, 0);
-
     routineList.forEach((routine, index) => {
       //チェックボックスを入れる
       this.sheets.main.getRange(index + this.startRow, 1).insertCheckboxes();
       //ルーティン名を入れる
       const nameRange = this.sheets.main.getRange(index + this.startRow, 2).setValue(routine.name);
-      //見逃し回数に対応した色を設定
-      if (missedSum) {
-        const missedRatio = routine.missed / missedSum;
-        if (missedRatio >= 0.2) { //0.2以上なら
-          nameRange.setFontColor('red');
-        } else if (missedRatio > 0 && missedRatio < 0.2) { //0.2未満なら
-          const color = `rgb(${Math.round(missedRatio * 255 * 5)}, 0, 0)`;
-          nameRange.setFontColor(color);
-        }
+      //routineListのbgColorに対応した色を設定
+      if (routine.bgColor) {
+        nameRange.setBackground(routine.bgColor);
       }
       //urlがあれば値を設定
       const urlType = /^(ftp|http|https):\/\/[^ "]+$/;

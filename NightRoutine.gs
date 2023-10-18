@@ -43,7 +43,7 @@ function optimizeNrList(conditions) {
       (routine.goOut && conditions.goOut) ||
       (routine.meetSomeone && conditions.meetSomeone) ||
       (routine.notGoSauna && !conditions.goSauna) ||
-      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name))) ||
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name), INTERVAL_LIMIT_2)) ||
       (routine.isStudy && conditions.isStudy);
 
     //期間monthを満たせているか

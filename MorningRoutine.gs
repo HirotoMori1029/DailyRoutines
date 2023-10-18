@@ -97,7 +97,7 @@ function optimizeMrList(conditions) {
       routine.always ||
       (routine.goOut && conditions.goOut) ||
       (routine.meetSomeone && conditions.meetSomeone) ||
-      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name))) ||
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name), INTERVAL_LIMIT_2)) ||
       (routine.name === 'check(Gmail)' && isUnreadGmail()) ||
       (routine.isStudy && conditions.isStudy);
 

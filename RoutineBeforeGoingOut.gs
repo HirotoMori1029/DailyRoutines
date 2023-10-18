@@ -64,7 +64,7 @@ function optimizeRbgoList(conditions) {
       (routine.goSauna && conditions.goSauna) ||
       (routine.whenBicycle && conditions.transportation.includes('bicycle')) ||
       (routine.isStudy && conditions.isStudy) ||
-      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name)));
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name), INTERVAL_LIMIT_2));
 
     //期間monthを満たせているか
     if (routine.startMonth <= routine.endMonth) {

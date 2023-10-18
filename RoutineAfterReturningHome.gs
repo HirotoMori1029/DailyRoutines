@@ -96,8 +96,8 @@ function optimizeRarhList(conditions) {
     let condition =
       routine.always ||
       (routine.goSauna && conditions.goSauna) ||
-      (routine.whenBicycle && conditions.transportation.includes('bicycle'));
-      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name)));
+      (routine.whenBicycle && conditions.transportation.includes('bicycle')) ||
+      (routine.interval && isTimeOver(getLDSaveNameByName(routine.name), INTERVAL_LIMIT_2));
 
     //期間monthを満たせているか
     if (routine.startMonth <= routine.endMonth) {

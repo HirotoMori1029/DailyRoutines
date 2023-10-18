@@ -227,11 +227,13 @@ function getMyRecord() {
 }
 
 // valueNameを渡すと現在時刻で換算してtargetValueを超えているか返す関数
-function isTimeOver(valueName) {
+function isTimeOver(valueName, limit) {
   const lastDone = myRecord.getValueFromLastDones(valueName, 'lastTime');
   const targetValue = myRecord.getValueFromLastDones(valueName, 'targetValue');
   if (lastDone) {
-    return (cDate.getTime() - lastDone.getTime()) * timeToDay >= targetValue;
+    const cInterval = (cDate.getTime() - lastDone.getTime()) * timeToDay;
+    const diff = (cInterval - targetValue) / targetValue;
+    return diff >= limit;
   }
   return false;
 }
