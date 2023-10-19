@@ -32,3 +32,16 @@ function setColorToLastDones() {
     }
   })
 }
+
+function highlight(valuename = 'lastHighlight') {
+  myRecord.saveValueToLastDones(valuename);
+  setColorToLastDones();
+}
+
+function addNewLD() {
+  let name =Browser.inputBox('input record name');
+  name = getLDSaveNameByName(name);
+  myRecord.saveValueToLastDones(name);
+  setColorToLastDones();
+}
+ 

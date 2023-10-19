@@ -44,7 +44,8 @@ class RoutineSheet {
       //urlがあれば値を設定
       const urlType = /^(ftp|http|https):\/\/[^ "]+$/;
       if ((typeof routine.url === 'string') && urlType.test(routine.url)) {
-        nameRange.setFormula(`=HYPERLINK("${routine.url}", "${routine.name}")`);
+        const formula = `=HYPERLINK("${routine.url}", "${routine.name}")`;
+        nameRange.setFormula(formula);
       }
     })
     this.sheets.main.autoResizeColumn(2);
