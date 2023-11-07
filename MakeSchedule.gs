@@ -222,9 +222,9 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   const rbgoCal = new CalendarProperty(RBGO, 30);
   const rarhCal = new CalendarProperty(RARH, 30);
-  const nrCal = new CalendarProperty(NR, 60 * 4);
-  nrCal.justWhenGoOut = false;
-  const calendarPropeties = [mrCal, goOutCal, famGoOutCal, rbgoCal, rarhCal, nrCal];
+  // const nrCal = new CalendarProperty(NR, 60 * 4);
+  // nrCal.justWhenGoOut = false;
+  const calendarPropeties = [mrCal, goOutCal, famGoOutCal, rbgoCal, rarhCal, /*todo 一時退避 nrCal */];
 
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
   goOutCal.st = new Date(scheduleData.leaveTime);
@@ -275,11 +275,11 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   mrCal.setEvent(events, titles);
   mrCal.setScheduleMode(scheduleData);
 
-  nrCal.ed = new Date(scheduleData.bedTime);
-  nrCal.st = new Date(nrCal.ed.getTime() - 1000 * 60 * nrCal.time);
-  nrCal.desc = nr.url
-  nrCal.setEvent(events, titles);
-  nrCal.setScheduleMode(scheduleData);
+  // nrCal.ed = new Date(scheduleData.bedTime);
+  // nrCal.st = new Date(nrCal.ed.getTime() - 1000 * 60 * nrCal.time);
+  // nrCal.desc = nr.url
+  // nrCal.setEvent(events, titles);
+  // nrCal.setScheduleMode(scheduleData);
 
   return calendarPropeties;
 }

@@ -8,6 +8,7 @@ function onRbgoStartBtnClicked() {
   const rbgo = new RoutineSheet(RBGO);
   rbgo.optimizeList = optimizeRbgoList;
   const rbgoCal = new CalendarProperty(RBGO, 30)
+  rbgoCal.setEvent(todayEvents, todayEventTitles);
   rbgo.onStart(rbgoCal);
 }
 

@@ -66,7 +66,7 @@ function onRarhEndBtnClicked() {
   rarh.saveLastDones();
   rarh.lockColumn(1)
   rarh.clearCheckAndColor();
-  activateSheet(NR);
+  activateSheet(LD);
 }
 
 function onRarhResetBtnClicked() {
@@ -81,10 +81,15 @@ function onRarhOptimizeBtnClicked() {
 }
 
 function saveTransportationValue(transportation) {
+  if (transportation.includes('walk')) {
+    myRecord.saveValueToLastDones('lastExercise', cDate);
+  }
+
   if (transportation.includes('bicycle')) {
     myRecord.saveValueToLastDones('lastBicycle', cDate);
     myRecord.saveValueToLastDones('lastExercise', cDate);
   }
+  
   if (transportation.includes('car')) {
     myRecord.saveValueToLastDones('lastCar', cDate);
   }
