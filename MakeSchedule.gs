@@ -162,14 +162,9 @@ function isLibraryClosed(scheduleData) {
   return false;
 }
 
-//rbgoの時間がmrの終了時間より早い?
-function isEarlyRbgo(calendarPropeties, scheduleData) {
-  const mrCal = calendarPropeties.find(cp => cp.title === MR);
-  const rbgoCal = calendarPropeties.find(cp => cp.title === RBGO);
-  if (scheduleData.goOut) {
-    return mrCal.ed.getTime() > rbgoCal.st.getTime();
-  }
-  return false;
+//降水確率が30%以上なら、trueを返す
+function isNeedUmbrella(scheduleData) {
+  return getPrecipByScraping(scheduleData.eventday) >= 30;
 }
 
 //日付情報に関する問題をバリデーションする
@@ -182,8 +177,8 @@ function showProgrem(scheduleData, calendarPropeties) {
   if (isLibraryClosed(scheduleData)) {
     msg += '目的地の図書館が非営業日の可能性があります\n';
   }
-  if (isEarlyRbgo(calendarPropeties, scheduleData)) {
-    msg += 'rbgoの時間がmrの終了より早いです\n';
+  if (isNeedUmbrella(scheduleData)) {
+    msg += '傘が必要です\n';
   }
  
   if (msg) Browser.msgBox(msg);
@@ -215,16 +210,17 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
 
   const { eventday, events, familyEvents, titles, familyEventTitles } = eventdayInfo;
   //カレンダー要素オブジェクトを定義
-  const mrCal = new CalendarProperty(MR, 60);
-  mrCal.justWhenGoOut = false;
+  // const mrCal = new CalendarProperty(MR, 60);
+  // mrCal.justWhenGoOut = false;
   const goOutCal = new CalendarProperty(GO, GO_OUT_TIME);
-  //todo イベントタイトルを定義する
   const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   const rbgoCal = new CalendarProperty(RBGO, 30);
   const rarhCal = new CalendarProperty(RARH, 30);
   // const nrCal = new CalendarProperty(NR, 60 * 4);
   // nrCal.justWhenGoOut = false;
-  const calendarPropeties = [mrCal, goOutCal, famGoOutCal, rbgoCal, rarhCal, /*todo 一時退避 nrCal */];
+
+  //mr, nr停止中
+  const calendarPropeties = [/*　mrCal,　*/ goOutCal, famGoOutCal, rbgoCal, rarhCal, /* nrCal */];
 
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
   goOutCal.st = new Date(scheduleData.leaveTime);
@@ -269,11 +265,12 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   rarhCal.setEvent(events, titles);
   rarhCal.setScheduleMode(scheduleData);
 
-  mrCal.st = new Date(scheduleData.getUpTime);
-  mrCal.ed = new Date((mrCal.st.getTime() + 1000 * 60 * mrCal.time));
-  mrCal.desc = mr.url;
-  mrCal.setEvent(events, titles);
-  mrCal.setScheduleMode(scheduleData);
+  //カレンダー作成するロジック停止中
+  // mrCal.st = new Date(scheduleData.getUpTime);
+  // mrCal.ed = new Date((mrCal.st.getTime() + 1000 * 60 * mrCal.time));
+  // mrCal.desc = mr.url;
+  // mrCal.setEvent(events, titles);
+  // mrCal.setScheduleMode(scheduleData);
 
   // nrCal.ed = new Date(scheduleData.bedTime);
   // nrCal.st = new Date(nrCal.ed.getTime() - 1000 * 60 * nrCal.time);

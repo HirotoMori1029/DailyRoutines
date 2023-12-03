@@ -28,6 +28,7 @@ const ss = SpreadsheetApp.openById(sp.getProperty('MY_ROUTINES_SHEET_ID'));
 //自分のカレンダー
 const myCalendar = CalendarApp.getCalendarById(sp.getProperty('MY_GMAIL_ADDRESS'));
 const familyCalendar = CalendarApp.getCalendarById(sp.getProperty('MORI_FAMILY_CALENDAR_ID'));
+const familyCalendarColor = familyCalendar.getColor()
 
 //今日のイベント配列を取得
 const todayEvents = myCalendar.getEvents(...timeRange);
@@ -357,7 +358,7 @@ function makeMsgFromScheduleData(scheduleData) {
   } = scheduleData;
 
   const eventDate = Utilities.formatDate(eventday, 'JST', 'MM/dd E');
-  const dayStr = getDayStrFromDate(eventday);
+  const dayStr = getDateStrFromDayDiff(getDayDiffFromCurrentDate(eventday));
   const transportationJa = LanguageApp.translate(transportation, 'en', 'ja');
 
   let madeMsg = `<返信不要>\n${eventDate} ${dayStr}の予定：${myName}\n`;
@@ -414,21 +415,24 @@ function hasStringElement(array, searchString) {
   return false;
 }
 
-//特定の日付と現在の日付の差分から、いつにあたるのかを表す文字列を返す関数            
-function getDayStrFromDate(date) {
+//特定の日付と現在の日付の差分から、いつにあたるのかを表す文字列を返す関数
+function getDayDiffFromCurrentDate(date) {
   const copyDate = new Date(date);
   copyDate.setHours(0, 0, 0, 0);
   const copyCDate = new Date(cDate);
   copyCDate.setHours(0, 0, 0, 0);
   const dayDiff = Math.round((copyDate.getTime() - copyCDate.getTime()) / (1000 * 60 * 60 * 24));
-  if (dayDiff === 0) {
-    return '今日';
-  } else if (dayDiff === 1) {
-    return '明日';
-  } else if (dayDiff === 2) {
-    return '明後日';
-  } else {
-    return `${dayDiff}日後`;
+  return dayDiff;
+}
+
+function getDateStrFromDayDiff(dayDiff) {
+  switch (dayDiff) {
+    case 0:
+      return '今日';
+    case 1:
+      return '明日';
+    default:
+      return `${dayDiff}日後`;
   }
 }
 

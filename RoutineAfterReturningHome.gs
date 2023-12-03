@@ -38,6 +38,7 @@ function onRarhStartBtnClicked() {
 
   if (famGoOutCal.event) {
     famGoOutCal.setTimeEnd(cDate);
+    famGoOutCal.event.setColor(familyCalendarColor);
   }
 
   const scheduleData = myRecord.getScheduleData(timeRange[0]);

@@ -20,3 +20,11 @@ function saveValueToLastDonesTest(saveName = 'lastHighlight') {
   setColorToLastDones();
 }
 
+function test() {
+  // const familyCalendarColor = familyCalendar.getColor()
+  // Logger.log(familyCalendarColor);
+}
+
+function loggerWithName(msg = "ログ名", value = "結果") {
+  Logger.log('%s: %s', msg, value)
+}
