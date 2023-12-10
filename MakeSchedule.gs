@@ -19,22 +19,27 @@ function onScheduleBtnClicked() {
     schedule(calendarProterties);
     if (!isNightHour(cDate)) sendLineMessage(msg);
     saveScheduleInfo(scheduleData);
+
     //外出中に明日のスケジュールを作成していたら
     if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOn(GO)) {
       rad.check('makeTomorrowSchedule()');
       activateSheet(RAD);
-    }
-    //MorningRoutine中にスケジュールを作成していたら
-    if (isCreatingOn(MR)) {
+
+      //MorningRoutine中にスケジュールを作成していたら
+    } else if (isCreatingOn(MR)) {
       const cMrCal = new CalendarProperty(MR, 60);
       cMrCal.setEvent(todayEvents, todayEventTitles);
       mr.optimize(makeCondition(cDate));
       mr.check('checkOrReschedule()');
       activateSheet(MR);
-    }
+
     //Nr中にスケジュールしていたら
-    if (isCreatingOn(NR)) {
+    } else if (isCreatingOn(NR)) {
       activateSheet(NR);
+
+    //それ以外
+    } else {
+      activateSheet(LD);
     }
   }
 }
@@ -42,13 +47,14 @@ function onScheduleBtnClicked() {
 function onCancelBtnClicked() {
   const sd = getScheduleDataFromSheet();
   const msg = `${sd.eventday.getMonth() + 1}月${sd.eventday.getDate()}日
-    ${getDayStrFromDate(sd.eventday)}の予定をキャンセルしました。`;
+    ${getDateStrFromDayDiff(getDayDiffFromCurrentDate(sd.eventday))}の予定をキャンセルしました。`;
   if (ask(`以下のメッセージを送信しますか？ -> ${msg}`)) {
     const gray = CalendarApp.EventColor.GRAY
     const grayEvents = todayEvents.filter(event => event.getColor() === gray);
     grayEvents.forEach(event => event.deleteEvent());
     const grayFamilyEvents = familiyEvents.filter(event => {
-      return event.getTitle() === FAM_EVENT_TITLE && event.getColor() === gray});
+      return event.getTitle() === FAM_EVENT_TITLE && event.getColor() === gray
+    });
     grayFamilyEvents.forEach(event => event.deleteEvent());
     sendLineMessage(msg);
   }
@@ -126,7 +132,7 @@ function getScheduleDataFromSheet() {
 
 //作っているのが明日のスケジュールなのか判定する関数
 function isCreatingNewTomorrowSchedule(eventday) {
-  const isTomorrow = getDayStrFromDate(eventday) === "明日";
+  const isTomorrow = getDateStrFromDayDiff(getDayDiffFromCurrentDate(eventday)) === "明日";
   return isTomorrow && !myRecord.isScheduled(eventday);
 }
 
@@ -180,7 +186,7 @@ function showProgrem(scheduleData, calendarPropeties) {
   if (isNeedUmbrella(scheduleData)) {
     msg += '傘が必要です\n';
   }
- 
+
   if (msg) Browser.msgBox(msg);
 }
 

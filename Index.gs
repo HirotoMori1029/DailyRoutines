@@ -28,7 +28,7 @@ const ss = SpreadsheetApp.openById(sp.getProperty('MY_ROUTINES_SHEET_ID'));
 //自分のカレンダー
 const myCalendar = CalendarApp.getCalendarById(sp.getProperty('MY_GMAIL_ADDRESS'));
 const familyCalendar = CalendarApp.getCalendarById(sp.getProperty('MORI_FAMILY_CALENDAR_ID'));
-const familyCalendarColor = familyCalendar.getColor()
+const familyCalendarColor = familyCalendar.getColor();
 
 //今日のイベント配列を取得
 const todayEvents = myCalendar.getEvents(...timeRange);
