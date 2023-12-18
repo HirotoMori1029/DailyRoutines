@@ -42,6 +42,16 @@ function addNewLD() {
   let name =Browser.inputBox('input record name');
   name = getLDSaveNameByName(name);
   myRecord.saveValueToLastDones(name);
+  sortDataRange();
   setColorToLastDones();
+}
+
+function sortDataRange() {
+  const sheet = ss.getSheetByName(LD);
+  const lastRow = sheet.getLastRow();
+  const lastColumn = sheet.getLastColumn();
+  const data = sheet.getRange(2, 1, lastRow - 1, lastColumn);
+  const sortTargetColumn = sheet.getRange(1,1,1, lastColumn).getValues()[0].indexOf("targetValue") + 1;
+  data.sort({column: sortTargetColumn});
 }
  
