@@ -150,7 +150,6 @@ function getMyRecord() {
         .setNumberFormats(sourceNumberFormats)
         .setFontWeights(sourceFontWeights)
         .setHorizontalAlignments(sourceHorizontalAlignments)
-        .setBorder(true, true, true, true, true, true, "black", SpreadsheetApp.BorderStyle.SOLID); //普通の罫線を引く
 
       const nameRng = targetRange.getCell(1, headers.indexOf('name') + 1);
       nameRng.setValue(valueName);
