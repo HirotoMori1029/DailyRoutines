@@ -143,13 +143,11 @@ function getMyRecord() {
 
       const formatCopySourceRange = ldSheet.getRange(ldSheet.getLastRow(), 1, 1, headers.length);
       const sourceNumberFormats = formatCopySourceRange.getNumberFormats();
-      const sourceBackgrounds = formatCopySourceRange.getBackgrounds(); //背景の色を取得
       const sourceFontWeights = formatCopySourceRange.getFontWeights(); //太字などのフォーマットウェイトを取得
       const sourceHorizontalAlignments = formatCopySourceRange.getHorizontalAlignments(); // 水平方向の配置を取得
       const targetRange = formatCopySourceRange.offset(1, 0);
       targetRange
         .setNumberFormats(sourceNumberFormats)
-        .setBackgrounds(sourceBackgrounds)
         .setFontWeights(sourceFontWeights)
         .setHorizontalAlignments(sourceHorizontalAlignments)
         .setBorder(true, true, true, true, true, true, "black", SpreadsheetApp.BorderStyle.SOLID); //普通の罫線を引く
