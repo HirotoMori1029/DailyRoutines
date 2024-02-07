@@ -17,6 +17,7 @@ const IS_STUDY = 'isStudy';
 const cDate = new Date();
 const INTERVAL_LIMIT_1 = 0.3;
 const INTERVAL_LIMIT_2 = -0.2;
+const DEFAULT_TARGET_VALUE = 7;
 const timeToDay = 1 / (1000 * 60 * 60 * 24)
 const timeRange = getTimeRange(cDate);
 
@@ -154,6 +155,7 @@ function getMyRecord() {
       const nameRng = targetRange.getCell(1, headers.indexOf('name') + 1);
       nameRng.setValue(valueName);
       nameRng.offset(0, headers.indexOf('lastTime')).setValue(value);
+      nameRng.offset(0, headers.indexOf('targetValue')).setValue(DEFAULT_TARGET_VALUE);
       nameRng.offset(0, headers.indexOf('intervalDayAve')).setValue(0);
       nameRng.offset(0, headers.indexOf('integral')).setValue(0);
       nameRng.offset(0, headers.indexOf('intervalAve')).setValue(0);

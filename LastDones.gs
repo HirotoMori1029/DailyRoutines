@@ -33,8 +33,8 @@ function setColorToLastDones() {
   })
 }
 
-function highlight(valuename = 'lastHighlight') {
-  myRecord.saveValueToLastDones(valuename);
+function highlight() {
+  myRecord.saveValueToLastDones('lastHighlight');
   setColorToLastDones();
 }
 
@@ -54,4 +54,34 @@ function sortDataRange() {
   const sortTargetColumn = sheet.getRange(1,1,1, lastColumn).getValues()[0].indexOf("targetValue") + 1;
   data.sort({column: sortTargetColumn});
 }
+
+function setPreviousDate() {
+  const sheet = ss.getSheetByName(LD);
+  const names = sheet.getRange(2, 1, sheet.getLastRow()).getValues().flat();
+  const activeCell = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet().getActiveCell();
+  const rowNumber = activeCell.getLastRow();
+  const name = names[rowNumber - 2];
+  const inputDate = new Date(cDate);
+  inputDate.setHours(inputDate.getHours(), 0, 0, 0);
+  loggerWithName("inputDate", inputDate);
+  const inputDateStr = Browser.inputBox("Please enter the date and time in six digits, like 020714");
+  if (!(inputDateStr.length === 6)) {
+    Browser.msgBox("input 6 digits !!");
+    return;
+  }
+  const firstTwoDigits = parseInt(inputDateStr.substring(0, 2));
+  const thirdAndFourthDigits = parseInt(inputDateStr.substring(2, 4));
+  const fifthAndSixthDigits = parseInt(inputDateStr.substring(4, 6));
+  inputDate.setMonth(firstTwoDigits - 1);
+  inputDate.setDate(thirdAndFourthDigits);
+  inputDate.setHours(fifthAndSixthDigits);
+  const lastTime = myRecord.getValueFromLastDones(name, 'lastTime');
+  if ( lastTime.getTime() >= inputDate.getTime()) {
+    Browser.msgBox('input larger date from lastTime of ' + name);
+    return;
+  }
+  myRecord.saveValueToLastDones(name, inputDate);
+  setColorToLastDones();
+}
+
  
