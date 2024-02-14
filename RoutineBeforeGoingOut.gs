@@ -1,7 +1,5 @@
 //StringDefinition
-
-const brush = 'brush(teeth)';
-
+const brush = 'remove(plaque)';
 
 //StartBtnが押されたときの処理
 function onRbgoStartBtnClicked() {

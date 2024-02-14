@@ -2,11 +2,9 @@
 const MORNING_HOUR = 5; // 5o'clock
 const GO_OUT_TIME = 5 * 60; // 5hours
 const NIGHT_HOUR = 22; // 22o'clock
-const MR = 'MorningRoutine';
 const RBGO = 'RoutineBeforeGoingOut';
 const RAD = 'RoutineAtDestination';
 const RARH = 'RoutineAfterReturningHome';
-const NR = 'NightRoutine';
 const GO = 'goOut';
 const SAUNA = 'Sauna';
 const LD = 'LastDones';

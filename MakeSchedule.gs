@@ -1,3 +1,8 @@
+//todo 方針
+//　headerとvalueを分ける必要がないので、削除して統一する必要がある。たぶんvaluesに統一
+//　その際、valuesの数字は、ずれるので使われている箇所の修正が必要である
+
+
 //文字列の定義
 const NOTHING = 'nothing';
 const DICELLNAME = 'DestinationInfo';
@@ -6,9 +11,6 @@ const DI = 'destinationInfo';
 //スケジュールボタンが押されたとき
 function onScheduleBtnClicked() {
   const scheduleData = getScheduleDataFromSheet();
-  const mr = new RoutineSheet(MR);
-  mr.optimizeList = optimizeMrList;
-  const rad = new RoutineSheet(RAD);
   //作成予定日のインフォメーションを取得
   const eventdayInfo = getEventdayInfo(scheduleData.eventday);
   //各カレンダープロパティに値を代入
@@ -19,28 +21,7 @@ function onScheduleBtnClicked() {
     schedule(calendarProterties);
     if (!isNightHour(cDate)) sendLineMessage(msg);
     saveScheduleInfo(scheduleData);
-
-    //外出中に明日のスケジュールを作成していたら
-    if (isCreatingNewTomorrowSchedule(scheduleData.eventday) && isCreatingOn(GO)) {
-      rad.check('makeTomorrowSchedule()');
-      activateSheet(RAD);
-
-      //MorningRoutine中にスケジュールを作成していたら
-    } else if (isCreatingOn(MR)) {
-      const cMrCal = new CalendarProperty(MR, 60);
-      cMrCal.setEvent(todayEvents, todayEventTitles);
-      mr.optimize(makeCondition(cDate));
-      mr.check('checkOrReschedule()');
-      activateSheet(MR);
-
-    //Nr中にスケジュールしていたら
-    } else if (isCreatingOn(NR)) {
-      activateSheet(NR);
-
-    //それ以外
-    } else {
-      activateSheet(LD);
-    }
+    activateSheet('ScheduleInfo');
   }
 }
 
@@ -65,34 +46,26 @@ function getScheduleDataFromSheet() {
   const sheet = ss.getSheetByName(MS);
   const range = sheet.getDataRange();
   const values = range.getValues();
-  const headers = values[0];
   const scheduleData = {};
 
   //keyValueになっている部分はそのままscheduleInfoに代入する
   const destinationInfoCell = sheet.createTextFinder(DICELLNAME).findNext();
-  const startIndex = 2
-  const endIndex = destinationInfoCell.getRow() - startIndex;
-  for (let k = startIndex; k <= endIndex; k++) {
+  const endIndex = destinationInfoCell.getRow();
+  for (let k = 0; k <= endIndex; k++) {
     scheduleData[values[k][0]] = values[k][1];
   }
   //eventdayを定義
-  scheduleData.eventday = values[1][0];
   scheduleData.eventday.setHours(MORNING_HOUR + 1);
-
-  //ヘッダーをkeyとしてDate型でscheduleDataに格納する
-  for (let j = 1; j < headers.length; j += 2) {
-    const date = new Date(scheduleData.eventday);
-    date.setHours(values[1][j], values[1][j + 1], 0, 0);
-    scheduleData[headers[j]] = date;
-  }
 
   //DestinationInfoを定義する
   const destinationHeaders = values[destinationInfoCell.getRow() - 1];
   const destinationArray = [];
 
-  let l = endIndex + 2;
+  //調整する必要があるかもしれないので、デバッグしながら確認する。たぶん+1に変える
+  let l = endIndex;
+
   let destinatinName = values[l][1];
-  while (destinatinName !== NOTHING) {  //nothingでなければ、オブジェクトとして情報を取得
+  while (destinatinName !== NOTHING) {
     let obj = {};
     for (let m = 1; m < destinationHeaders.length; m++) {
       if (destinationHeaders[m]) {
@@ -103,6 +76,7 @@ function getScheduleDataFromSheet() {
     l++;
     destinatinName = values[l][1];
   }
+
   scheduleData[DI] = destinationArray;
   const start = destinationArray[0];
   const leaveTime = new Date(scheduleData.eventday);
@@ -136,7 +110,7 @@ function isCreatingNewTomorrowSchedule(eventday) {
   return isTomorrow && !myRecord.isScheduled(eventday);
 }
 
-//MR中に予定を作成しているか？
+//あるイベント中に予定を作成しているか？
 function isCreatingOn(eventName) {
   const refEvent = todayEvents[todayEventTitles.indexOf(eventName)];
   if (refEvent) return getTimingOfEvent(refEvent) === 'onTime';
@@ -209,24 +183,17 @@ function saveScheduleInfo(scheduleData) {
 function setCalendarProperties(eventdayInfo, scheduleData) {
 
   //ルーティンオブフェクトを定義
-  const mr = new RoutineSheet(MR);
   const rbgo = new RoutineSheet(RBGO);
   const rarh = new RoutineSheet(RARH);
-  const nr = new RoutineSheet(NR);
 
   const { eventday, events, familyEvents, titles, familyEventTitles } = eventdayInfo;
   //カレンダー要素オブジェクトを定義
-  // const mrCal = new CalendarProperty(MR, 60);
-  // mrCal.justWhenGoOut = false;
   const goOutCal = new CalendarProperty(GO, GO_OUT_TIME);
   const famGoOutCal = new CalendarProperty(FAM_EVENT_TITLE, GO_OUT_TIME);
   const rbgoCal = new CalendarProperty(RBGO, 30);
   const rarhCal = new CalendarProperty(RARH, 30);
-  // const nrCal = new CalendarProperty(NR, 60 * 4);
-  // nrCal.justWhenGoOut = false;
 
-  //mr, nr停止中
-  const calendarPropeties = [/*　mrCal,　*/ goOutCal, famGoOutCal, rbgoCal, rarhCal, /* nrCal */];
+  const calendarPropeties = [goOutCal, famGoOutCal, rbgoCal, rarhCal];
 
   goOutCal.doneColor = CalendarApp.EventColor.ORANGE;
   goOutCal.st = new Date(scheduleData.leaveTime);
@@ -270,19 +237,6 @@ function setCalendarProperties(eventdayInfo, scheduleData) {
   rarhCal.reminderTime += scheduleData.fromLastDestination;
   rarhCal.setEvent(events, titles);
   rarhCal.setScheduleMode(scheduleData);
-
-  //カレンダー作成するロジック停止中
-  // mrCal.st = new Date(scheduleData.getUpTime);
-  // mrCal.ed = new Date((mrCal.st.getTime() + 1000 * 60 * mrCal.time));
-  // mrCal.desc = mr.url;
-  // mrCal.setEvent(events, titles);
-  // mrCal.setScheduleMode(scheduleData);
-
-  // nrCal.ed = new Date(scheduleData.bedTime);
-  // nrCal.st = new Date(nrCal.ed.getTime() - 1000 * 60 * nrCal.time);
-  // nrCal.desc = nr.url
-  // nrCal.setEvent(events, titles);
-  // nrCal.setScheduleMode(scheduleData);
 
   return calendarPropeties;
 }

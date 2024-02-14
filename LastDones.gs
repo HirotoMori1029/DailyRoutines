@@ -18,14 +18,14 @@ function setColorToLastDones() {
   //それぞれのインターバルを算出
   values.forEach((value, index) => {
     const lastTime = value[lastTimeIndex].getTime();
-    const targetValue = value[targetValueIndex] 
+    const targetValue = value[targetValueIndex]
     const cInterval = (cDate.getTime() - lastTime) * timeToDay;
     const diff = ((cInterval - targetValue) / targetValue);
     const bkRange = sheet.getRange(index + 2, lastTimeIndex + 1);
 
     if (diff >= INTERVAL_LIMIT_1) {
       bkRange.setBackground('#ef476f');
-    } else if (diff >= INTERVAL_LIMIT_2){
+    } else if (diff >= INTERVAL_LIMIT_2) {
       bkRange.setBackground('#ffd166');
     } else {
       bkRange.setBackground('#06d6a0');
@@ -39,7 +39,7 @@ function highlight() {
 }
 
 function addNewLD() {
-  let name =Browser.inputBox('input record name');
+  let name = Browser.inputBox('input record name');
   name = getLDSaveNameByName(name);
   myRecord.saveValueToLastDones(name);
   sortDataRange();
@@ -51,8 +51,8 @@ function sortDataRange() {
   const lastRow = sheet.getLastRow();
   const lastColumn = sheet.getLastColumn();
   const data = sheet.getRange(2, 1, lastRow - 1, lastColumn);
-  const sortTargetColumn = sheet.getRange(1,1,1, lastColumn).getValues()[0].indexOf("targetValue") + 1;
-  data.sort({column: sortTargetColumn});
+  const sortTargetColumn = sheet.getRange(1, 1, 1, lastColumn).getValues()[0].indexOf("targetValue") + 1;
+  data.sort({ column: sortTargetColumn });
 }
 
 function setPreviousDate() {
@@ -76,7 +76,7 @@ function setPreviousDate() {
   inputDate.setDate(thirdAndFourthDigits);
   inputDate.setHours(fifthAndSixthDigits);
   const lastTime = myRecord.getValueFromLastDones(name, 'lastTime');
-  if ( lastTime.getTime() >= inputDate.getTime()) {
+  if (lastTime.getTime() >= inputDate.getTime()) {
     Browser.msgBox('input larger date from lastTime of ' + name);
     return;
   }
@@ -84,4 +84,3 @@ function setPreviousDate() {
   setColorToLastDones();
 }
 
- 
