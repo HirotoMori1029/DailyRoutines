@@ -2,15 +2,15 @@
 const MORNING_HOUR = 5; // 5o'clock
 const GO_OUT_TIME = 5 * 60; // 5hours
 const NIGHT_HOUR = 22; // 22o'clock
-const RBGO = 'RoutineBeforeGoingOut';
-const RAD = 'RoutineAtDestination';
-const RARH = 'RoutineAfterReturningHome';
+const RBGO = 'RBGO';
+const RAD = 'RAD';
+const RARH = 'RARH';
 const GO = 'goOut';
 const SAUNA = 'Sauna';
 const LD = 'LastDones';
 const SI = 'ScheduleInfo';
 const MS = 'MakeSchedule';
-const LTTW = 'ListToTakeWith';
+const LTTW = 'LTTW';
 const IS_STUDY = 'isStudy';
 const cDate = new Date();
 const INTERVAL_LIMIT_1 = 0.3;
@@ -60,7 +60,7 @@ function getTimingOfEvent(event) {
 
 //routineの名前から、routineListが記されたシートの名前を作成する関数
 function getRoutineListSheetNameByRoutineName(routineName) {
-  return `${routineName.match(/[A-Z]/g).join('')}_RoutineList`;
+  return `${routineName + '_rList'}`;
 }
 
 //カレンダーから今日の予定要素配列を取得する
