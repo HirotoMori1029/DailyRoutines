@@ -388,18 +388,10 @@ function makeMsgFromScheduleData(scheduleData) {
   }
 
   if (message) {
-    madeMsg += makeExtraMessage();
+    madeMsg += message;
   }
 
   return madeMsg;
-}
-
-function makeExtraMessage() {
-  const msg = Browser.inputBox('Input the extra message');
-  if (msg === 'cancel') {
-    return '';
-  }
-  return msg;
 }
 
 

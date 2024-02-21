@@ -61,7 +61,6 @@ function getScheduleDataFromSheet() {
   const destinationHeaders = values[destinationInfoCell.getRow() - 1];
   const destinationArray = [];
 
-  //調整する必要があるかもしれないので、デバッグしながら確認する。たぶん+1に変える
   let l = endIndex;
 
   let destinatinName = values[l][1];
