@@ -61,9 +61,7 @@ function onRarhEndBtnClicked() {
   rarh.optimizeList = optimizeRarhList;
   const rarhCal = new CalendarProperty(RARH, 30);
   rarhCal.setEvent(todayEvents, todayEventTitles);
-  const nr = new RoutineSheet(NR);
   rarhCal.setTimeEnd();
-  nr.check('rarhDone()');
   rarh.saveLastDones();
   rarh.lockColumn(1)
   rarh.clearCheckAndColor();

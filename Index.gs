@@ -383,8 +383,6 @@ function makeMsgFromScheduleData(scheduleData) {
 
   if (goSauna) {
     madeMsg += "温泉に行きます\n";
-  } else {
-    madeMsg += "家でお風呂に入ります\n";
   }
 
   if (message) {

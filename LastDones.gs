@@ -1,3 +1,15 @@
+//鋭意作成中
+
+// const rules = [
+//   applyLipBalm
+// ]
+
+// const applyLipBalm = {
+//   name: getLDSaveNameByName("lastApply(lipBalm)"),
+//   seasonStart: 12,
+//   seasonEnd: 2
+// }
+
 function setCurrentDate() {
   const sheet = ss.getSheetByName(LD);
   const names = sheet.getRange(2, 1, sheet.getLastRow()).getValues().flat();
@@ -64,7 +76,7 @@ function setPreviousDate() {
   const inputDate = new Date(cDate);
   inputDate.setHours(inputDate.getHours(), 0, 0, 0);
   loggerWithName("inputDate", inputDate);
-  const inputDateStr = Browser.inputBox("Please enter the date and time in six digits, like 020714");
+  const inputDateStr = Browser.inputBox("Please enter the date and time in six digits, mmddhh ex) 052113");
   if (!(inputDateStr.length === 6)) {
     Browser.msgBox("input 6 digits !!");
     return;
